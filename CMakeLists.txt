@@ -15,13 +15,15 @@ endif()
 
 add_compile_options(-Wall -Wextra -fdiagnostics-color)
 
-include_directories(include/)
+include_directories(include/ src/)
 
 link_libraries(asan)
 
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
 file(GLOB SRC_FILES "${SRC_DIR}/*.cpp")
+
+list(REMOVE_ITEM SRC_FILES "${SRC_DIR}/constexpr.cpp")
 
 foreach(SRC_FILE ${SRC_FILES})
     get_filename_component(NAME ${SRC_FILE} NAME_WE)
@@ -43,3 +45,5 @@ foreach(TGT ${PROPERTIES_TARGETS})
     )
 endforeach()
 
+add_executable(constexpr_test tests/constexpr_test.cpp)
+target_link_libraries(constexpr_test gtest gmock pthread)

@@ -1,8 +1,11 @@
-// определение структуры Point уже подключено
 #include <iostream>
 #include <ostream>
+
+// определение структуры Point уже подключено
 struct Point
 {
+    Point() = default;
+
     constexpr Point(double x, double y)
         : x(x), y(y) {}
 
@@ -29,6 +32,7 @@ constexpr double operator*(const Point &p1, const Point &p2) {
     return p1.x * p2.x + p1.y * p2.y;
 }
 
+#if 0
 int main(int /*argc*/, char * /*argv*/ []) {
     Point p1 = {1, 0};
     Point p2 = {0, 1};
@@ -39,3 +43,4 @@ int main(int /*argc*/, char * /*argv*/ []) {
 
     return 0;
 }
+#endif

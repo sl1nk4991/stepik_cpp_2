@@ -13,5 +13,13 @@
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         }
+    ],
+    "testPresets": [
+        {
+            "name": "test",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "gcc"
+        }
     ]
 }
