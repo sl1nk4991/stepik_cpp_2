@@ -2,3 +2,4 @@ out/
 build/
 build_release/
 .cache
+.vscode
