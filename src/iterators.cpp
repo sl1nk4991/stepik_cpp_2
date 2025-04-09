@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <ostream>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -16,11 +17,11 @@ public:
 
     VectorList() = default;
 
-    VectorList(VectorList &&)       = default;
-    VectorList(VectorList const &)  = default;
+    VectorList(VectorList &&)      = default;
+    VectorList(VectorList const &) = default;
 
-    VectorList & operator=(VectorList &&)       = default;
-    VectorList & operator=(VectorList const &)  = default;
+    VectorList & operator=(VectorList &&)      = default;
+    VectorList & operator=(VectorList const &) = default;
 
     // метод, который будет использоваться для заполнения VectorList
     // гарантирует, что в списке не будет пустых массивов
@@ -65,8 +66,8 @@ public:
 
             const_iterator &operator++() {
                 if (++this->itv == this->it->end()) {
-                    if (++this->it != this->data_->end()) {
-                        this->itv = this->it->begin();
+                    if (this->it != --this->data_->end()) {
+                        this->itv = (++this->it)->begin();
                     }
                 }
 
@@ -80,12 +81,14 @@ public:
             }
 
             const_iterator &operator--() {
-                if (--this->itv == --this->it->begin()) {
-                    if (--this->it != --this->data_->begin()) {
-                        this->itv = --this->it->end();
+                if (this->itv == this->it->begin()) {
+                    // Move to the previous vector if not at the first valid vector
+                    if (this->it != ++this->data_->begin()) {
+                        --this->it;
+                        this->itv = this->it->end();
                     }
                 }
-
+                --this->itv; // Decrement the vector iterator
                 return *this;
             }
 
@@ -108,7 +111,7 @@ public:
             }
 
             pointer operator->() const {
-                return std::addressof(this->itv);
+                return std::addressof(*this->itv);
             }
 
     private:
@@ -264,6 +267,7 @@ int main()
     std::cout << *--it1 << ' ';
 
     std::cout << "One element test" << std::endl;
+#if 0
     VectorList<int> vlistOneElement;
     std::vector<int> vOne;
     vOne.push_back( 1 );
@@ -277,8 +281,9 @@ int main()
     auto it4 = vListEmpty.begin();
     for (; it4 != vListEmpty.end(); ++it4)
         std::cout << *it4 << ' ';
+#endif
 
-# if 0
+# if 1
     {
         VectorList<int> vListSingleItem;
         std::vector<int> vOneelemtn;
@@ -300,6 +305,8 @@ int main()
         --itcontaint;
         std::cout << *itcontaint << ' ';
         --itcontaint;
+        ++itcontaint;
+        std::flush(std::cout);
         std::cout << *itcontaint << ' ';
 
     }
@@ -308,7 +315,18 @@ int main()
     {
 
 
-        std::vector<std::string> v1 = { "one", "two", "three" }; std::vector<std::string> v2 = { "four", "five", "six", "seven", "eight" }; std::vector<std::string> v3 = { "nine", "ten", "eleven", "twelve" }; std::vector<std::string> v4 = {}; for (int k = 13; k <= 30; ++k) { v4.push_back(std::to_string(k) + "-th"); }VectorList<std::string> vl; std::cout << "empty distance = " << std::distance(vl.rbegin(), vl.rend()) << std::endl;
+        std::vector<std::string> v1 = { "one", "two", "three" };
+        std::vector<std::string> v2 = { "four", "five", "six", "seven", "eight" };
+        std::vector<std::string> v3 = { "nine", "ten", "eleven", "twelve" };
+        std::vector<std::string> v4 = {};
+
+        for (int k = 13; k <= 30; ++k) {
+            v4.push_back(std::to_string(k) + "-th");
+        }
+
+        VectorList<std::string> vl;
+
+        std::cout << "empty distance = " << std::distance(vl.rbegin(), vl.rend()) << std::endl;
 
 
         vl.append(v1.begin(), v1.end());
@@ -340,6 +358,7 @@ int main()
         }
         std::cout << std::endl;
     }
+
     return 0;
 }
 #endif
