@@ -36,7 +36,7 @@ public:
     // определите метод size
     size_t size() const {
         size_t size = 0;
-        for (auto it: this->data_) {
+        for (const auto &it: this->data_) {
             size += it.size();
         }
         return size;
@@ -82,13 +82,12 @@ public:
 
             const_iterator &operator--() {
                 if (this->itv == this->it->begin()) {
-                    // Move to the previous vector if not at the first valid vector
                     if (this->it != ++this->data_->begin()) {
                         --this->it;
                         this->itv = this->it->end();
                     }
                 }
-                --this->itv; // Decrement the vector iterator
+                --this->itv;
                 return *this;
             }
 
@@ -148,7 +147,7 @@ private:
 };
 
 
-#if 0
+#if 1
 int main(int /*argc*/, char * /*argv*/ []) {
     VectorList<int> vl;
 
@@ -179,18 +178,24 @@ int main(int /*argc*/, char * /*argv*/ []) {
     std::cout << std::endl;
 #endif
 
+#if 1
     VectorList<int> vl2;
+    std::vector<int> empty;
+
+    vl2.append(empty.begin(), empty.end());
 
     auto b = vl2.begin();
     auto e = vl2.end();
 
-    std::cout << (b == e) << std::endl;
+    std::cout << vl2.size() << std::endl;
+    std::cout << std::distance(b, e) << std::endl;
+#endif
 
     return 0;
 }
 #endif
 
-#if 1
+#if 0
 int main()
 {
     VectorList<int> vlist;
