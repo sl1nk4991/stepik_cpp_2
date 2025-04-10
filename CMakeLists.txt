@@ -36,6 +36,7 @@ set(PROPERTIES_TARGETS
     "perfect_forwarding"
     "associative_containers"
     "iterators"
+    "algorithms"
 )
 
 foreach(TGT ${PROPERTIES_TARGETS})
