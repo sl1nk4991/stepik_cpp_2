@@ -37,6 +37,7 @@ set(PROPERTIES_TARGETS
     "associative_containers"
     "iterators"
     "algorithms"
+    "async"
 )
 
 foreach(TGT ${PROPERTIES_TARGETS})

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 class bad_from_string : public std::exception {
@@ -33,6 +35,16 @@ T from_string(std::string const& s) {
     return t;
 }
 
+template<class T>
+void do_math() noexcept(
+        noexcept(T(std::declval<T>())) && //rvalue constructor (move)
+        noexcept(std::declval<T>() + std::declval<T>()) && //operator+
+        noexcept(std::declval<T&>() = std::declval<T>()) && //rvalue assignment
+        noexcept(std::declval<T&>() = std::declval<T&>()) && //lvalue assignment
+        noexcept(T(std::declval<T&>())) //lvalue constructor (copy)
+    )
+{}
+
 int main(int /*argc*/, char * /*argv*/ []) {
     using namespace std;
 
@@ -57,6 +69,10 @@ int main(int /*argc*/, char * /*argv*/ []) {
 
     }
 #endif
+
+    std::cout << noexcept(do_math<int>()) << std::endl;
+
+    std::cout << noexcept(do_math<std::string>()) << std::endl;
 
     return 0;
 }
