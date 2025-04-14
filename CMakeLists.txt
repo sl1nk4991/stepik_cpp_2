@@ -38,6 +38,7 @@ set(PROPERTIES_TARGETS
     "iterators"
     "algorithms"
     "async"
+    "metaprogramming"
 )
 
 foreach(TGT ${PROPERTIES_TARGETS})
