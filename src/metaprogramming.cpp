@@ -1,4 +1,5 @@
 #include <cstddef>
+//#include <functional>
 #include <iostream>
 #include <ostream>
 #include <tuple>
@@ -269,10 +270,32 @@ using AccelQ    = Quantity<Dimension<1, 0, -2>>;   // ускорение, мет
 using ForceQ    = Quantity<Dimension<1, 1, -2>>;   // сила в ньютонах
 //Quantity
 
+//get_size
+template <typename T, size_t (T::*)() const = &T::size>
+size_t get_size(const T& t) {
+    return t.size();
+}
+
+template<typename T, size_t (T::*) = &T::size>
+size_t get_size(const T& t) {
+    return t.size;
+}
+
+//template<typename T>
+//size_t get_size(const T& t) {
+//    return std::mem_fn(&T::size)(t);
+//}
+//get_size
+
+struct S {
+    S(size_t s) : size(s) {}
+    size_t size = 0;
+};
+
 template <typename T>
 void check() {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
+};
 
 int main() {
     std::cout << Fib<10>::value << std::endl;
@@ -332,6 +355,16 @@ int main() {
         FreqQ hz = (double)1 / t;
         std::cout << hz << std::endl;
         check<typeof(hz)>();
+    }
+
+    {
+        std::string s{"hello"};
+        size_t s_size = get_size(s);
+        std::cout << s_size << std::endl;
+
+        S x{10};
+        size_t x_size = get_size<S>(x);
+        std::cout << x_size << std::endl;
     }
 
     return 0;
